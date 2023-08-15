@@ -3,8 +3,8 @@
     src: url(./images/wordsworth.ttf);
 }
 @font-face {
-    font-family: EB Garamond;
-    src: url(./images/EBGaramond-VariableFont_wght.ttf);
+    font-family: Jost;
+    src: url(./images/Jost-VariableFont_wght.ttf);
 }
 body {
     background-color:#F0DFA3;
@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     margin: 0 0 0 0;
     height: 100vh;
-    font-family: EB Garamond;
+    font-family: Jost;
 }
 p {
     margin: 0 0 0 0;
@@ -21,7 +21,8 @@ p {
     font-family: Wordsworth;
     padding: 0 0 0 min(3%, 15px);
     display: flex;
-    background-color: #aa653a;
+    background-image: url('./images/leather.jpg');
+    background-size: 100%;
     height: 12vh;
     align-items: center;
     box-shadow: 0 0 6px 0 black;
@@ -57,9 +58,23 @@ h1 {
     border-right: 8px double #DC5175;
     padding-left: min(3%, 15px);
     padding-right: min(3%, 15px);
-    padding-top: 8px;
     width: min(12em, 20%);
 }
+#add-list-button {
+    font-family: Jost;
+    font-size: 16px;
+    height: 4.5vh;
+    margin-top: 2px;
+    text-align: left;
+    padding: 0 0 0 0;
+    background-color: #f0dfa300;
+    border: none;
+    cursor: pointer;
+}
+#add-list-button:hover {
+    color:#229F9F;
+}
+
 #list-space {
     display: flex;
     flex-direction: column;
@@ -69,14 +84,26 @@ h2 {
     margin: 30px 0 5px 0;
 }
 ul {
+    margin: 0 0 0 0;
     list-style: none;
     padding: 0 0 0 0;
+    height: 4.5vh;
 }
 
 /* sidebar */
-.list-card {
+#my-lists-div {
     display: flex;
-
+    height: 12vh;
+    align-items: flex-end;
+}
+#my-lists {
+    margin: 0 0 9px 0;
+}
+.list-card {
+    margin-top: 1px;
+    display: flex;
+    height: 4.5vh;
+    align-items: center;
 }
 .num-tasks {
     margin-left: auto;
@@ -91,7 +118,7 @@ ul {
 }
 .list-name {
     margin: 0 0 5px 0;
-    font-size: 36px;
+    font-size: 35px;
 }
 .list-desc {
     line-height: 4.5vh;
@@ -103,10 +130,75 @@ ul {
     height: 4.5vh;
     margin-top: 2px;
 }
-
+#nameField {
+    margin: 2px 0 0 -22px;
+    border: none;
+    background-color: #F0DFA3;
+    border-radius: 0%;
+    height: 2.5vh;
+    width: 55vw;
+    overflow: hidden;
+    font-family: Jost;
+    font-size: 18px;
+}
+#nameField:focus {
+    outline-width: 0;
+    border: none;
+}
+.add-task-button {
+    font-family: Jost;
+    font-size: 18px;
+    height: 4.3vh;
+    margin-top: 3px;
+    text-align: left;
+    padding: 0 0 0 0;
+    background-color: #f0dfa300;
+    border: none;
+    cursor: pointer;
+}
+.add-task-button:hover {
+    color: #229F9F;
+}
+#deleteListLine {
+    gap: 8px;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 4.95vh;
+    align-items: center;
+}
+#yesOrNo {
+    cursor: pointer;
+}
+#yesOrNo:hover {
+    color: #DC5175;
+}
+.delete-list-button {
+    font-family: Jost;
+    font-size: 18px;
+    height: 4vh;
+    margin-right: 3px;
+    padding: 0 0 0 0;
+    cursor: pointer;
+    border: 1.5px solid black;
+    color: black;
+    background-color: #F0DFA3;
+    border-radius: 1000px;
+    width: fit-content;
+    padding: 0 15px 0 15px;
+}
+.delete-list-button:hover {
+    background-color: #DC5175;
+    border-color: #DC5175;
+    color: white;
+}
 /* style checkbox */
 .css-checkbox { position: absolute; overflow: hidden; clip: rect(0 0 0 0); height: 1px; width: 1px; margin: -1px; padding: 0; border: 0; }
-#taskContainer { display: flex; gap: 20px; justify-content: center;	}
-.css-checkbox + label { position: relative; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; height: 22px; color: rgb(0, 0, 0); }
-.css-checkbox + label::before { content: " "; display: inline-block; vertical-align: middle; margin-right: 3px; width: 22px; height: 22px; background-color: white; border-width: 0px; border-style: solid; border-color: rgb(204, 204, 204); border-radius: 0px; box-shadow: rgba(115, 115, 115, 0.99) 2px 2px 0px 0px; }
+#taskContainer { display: flex; gap: 20px; justify-content: center;	align-items: center;}
+.css-checkbox + label { position: relative; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; height: 22px; color: rgb(0, 0, 0);}
+.css-checkbox + label::before { content: " "; display: inline-block; vertical-align: middle; margin-right: 10px; width: 22px; height: 22px; background-color: white; border-width: 0px; border-style: solid; border-color: rgb(204, 204, 204); border-radius: 0px; box-shadow: rgba(115, 115, 115, 0.99) 2px 2px 0px 0px; }
 .css-checkbox:checked + label::after { content: " "; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIiIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiLz48L3N2Zz4="); background-repeat: no-repeat; background-size: 16px 16px; background-position: center center; position: absolute; display: flex; justify-content: center; align-items: center; margin-left: 0px; left: 0px; top: 0px; text-align: center; background-color: transparent; font-size: 10px; height: 22px; width: 22px; }
+label {
+    margin-top: 2px;
+    line-height: 4.5vh;
+}

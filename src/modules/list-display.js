@@ -5,25 +5,17 @@ function displayTask(task) {
     const taskCard = document.createElement('div');
     taskCard.setAttribute('class', 'task-card');
 
-    // <div id="inputPreview">
-        // 	<input name="cssCheckbox" id="demo_opt_1" type="checkbox" class="css-checkbox">
-        // 	<label for="demo_opt_1">Option 1</label>
-        // 	<input name="cssCheckbox" id="demo_opt_2" type="checkbox" class="css-checkbox" checked="">
-        // 	<label for="demo_opt_2">Option 2</label>
-        // 	<input name="cssCheckbox" id="demo_opt_3" type="checkbox" class="css-checkbox">
-        // 	<label for="demo_opt_3">Option 3</label>
-	// </div>
     const taskContainer = document.createElement('div');
     taskContainer.setAttribute('id', 'taskContainer');
 
     const checkbox = document.createElement('input');
     checkbox.setAttribute('name', 'cssCheckbox');
-    checkbox.setAttribute('id', 'demo_opt_1');
+    checkbox.setAttribute('id', task.number);
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('class', 'css-checkbox');
 
     const label = document.createElement('label');
-    label.setAttribute('for', 'demo_opt_1');
+    label.setAttribute('for', task.number);
     label.innerText = task.name;
 
     taskContainer.appendChild(checkbox);
@@ -61,7 +53,7 @@ function displayList(lst, listOfLists) {
 
     const addTaskButton = document.createElement('button');
     addTaskButton.setAttribute('class', 'add-task-button');
-    addTaskButton.innerText = '+ add task';
+    addTaskButton.innerText = '＋ Add task';
     addTaskButton.addEventListener('click', function (e) {
 
         addTaskButton.hidden = true;
@@ -74,12 +66,12 @@ function displayList(lst, listOfLists) {
     
         const checkbox = document.createElement('input');
         checkbox.setAttribute('name', 'cssCheckbox');
-        checkbox.setAttribute('id', 'demo_opt_1');
+        checkbox.setAttribute('id', lst.numTasks);
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('class', 'css-checkbox');
     
         const label = document.createElement('label');
-        label.setAttribute('for', 'demo_opt_1');
+        // label.setAttribute('for', 'demo_opt_1');
         label.innerText = '';
     
         taskContainer.appendChild(checkbox);
@@ -92,7 +84,8 @@ function displayList(lst, listOfLists) {
         nameField.addEventListener('keypress', function(e) {
 
             if (e.key === 'Enter') {
-                const task = new Task(e.target.value)
+                const taskID = `${lst.tasks.length + 1}`;
+                const task = new Task(e.target.value, taskID);
                 lst.addTask(e.value);
                 list.removeChild(taskCard);
                 list.append(displayTask(task));
@@ -104,23 +97,56 @@ function displayList(lst, listOfLists) {
         taskContainer.append(nameField);
         taskCard.appendChild(taskContainer);
         list.appendChild(taskCard);
+        document.getElementById('nameField').focus();
     });
 
+    const deleteListLine = document.createElement('div');
+    deleteListLine.setAttribute('id', 'deleteListLine');
     const deleteListButton = document.createElement('button');
     deleteListButton.setAttribute('class', 'delete-list-button');
-    deleteListButton.innerText = 'delete list';
+    deleteListButton.innerText = 'Delete list';
+    deleteListButton.addEventListener('click', function (e) {
+        deleteListButton.disabled = true;
+        const areYouSure = document.createElement('p');
+        areYouSure.innerText = 'Are you sure?';
+        deleteListLine.appendChild(areYouSure);
+        const yes = document.createElement('p');
+        yes.setAttribute('id', 'yesOrNo');
+        yes.innerText = 'YES';
+        yes.addEventListener('click', function (e) {
+            listOfLists.splice(listOfLists.indexOf(lst), 1);
+            displaySidebarLists(listOfLists);
+            listSpace.innerHTML = '';
+        })
+        const no = document.createElement('p');
+        no.setAttribute('id', 'yesOrNo');
+        no.innerText = 'NO';
+        no.addEventListener('click', function (e) {
+            deleteListLine.removeChild(deleteListLine.lastChild);
+            deleteListLine.removeChild(deleteListLine.lastChild);
+            deleteListLine.removeChild(deleteListLine.lastChild);
+            deleteListButton.disabled = false;
+        })
+        deleteListLine.appendChild(yes);
+        deleteListLine.appendChild(no);
+    })
+    deleteListLine.appendChild(deleteListButton);
 
     listNameDiv.appendChild(listName);
     listSpace.appendChild(listDesc);
     listSpace.appendChild(list);
     listSpace.appendChild(addTaskButton);
-    listSpace.appendChild(deleteListButton);
+    listSpace.appendChild(deleteListLine);
 
     return list;
 }
 
 function displaySidebarLists(listOfLists) {
     const lOL = document.querySelector('#list-of-lists'); // lOL = listOfLists
+    if (listOfLists.length == 0) {
+        lOL.removeChild(lOL.lastChild);
+        lOL.style = 'height: 0';
+    }
     listOfLists.forEach(list => {
         lOL.removeChild(lOL.lastChild);
         var listCard = document.createElement('li');
@@ -128,7 +154,6 @@ function displaySidebarLists(listOfLists) {
         listCard.innerText = list.name;
         var numTasks = document.createElement('p');
         numTasks.setAttribute('class', 'num-tasks');
-        console.log(list)
         numTasks.innerText = list.tasks.length;
         listCard.appendChild(numTasks);
         lOL.appendChild(listCard);
