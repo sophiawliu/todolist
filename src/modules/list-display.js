@@ -1,7 +1,46 @@
 import Task from './task.js';
 import List from './list.js';
 
-function displayTask(task) {
+function addList(lOL) {
+    const sidebar = document.querySelector('#sidebar');
+    const lOLDiv = document.querySelector('#list-of-lists');
+    const addListButton = document.createElement('button');
+    addListButton.setAttribute('type', 'button');
+    addListButton.setAttribute('id', 'add-list-button');
+    addListButton.innerText = '＋ Add list';
+    addListButton.addEventListener('click', function (e) {
+        addListButton.hidden = true;
+        const listCard = document.createElement('div');
+        listCard.setAttribute('class', 'list-card');
+    
+        const listNameField = document.createElement('input');
+        listNameField.setAttribute('id', 'listNameField');
+        listNameField.setAttribute('type', 'text');
+        listNameField.addEventListener('keypress', function(e) {
+
+            if (e.key === 'Enter') {
+                const newList = new List(e.target.value);
+                lOL.push(newList);
+
+                addListButton.hidden = false;
+                displaySidebarLists(lOL);
+
+                const listSpace = document.querySelector('#list-space');
+                listSpace.innerHTML = '';
+                displayList(newList, lOL);
+            }
+        })
+        listCard.appendChild(listNameField);
+        lOLDiv.appendChild(listCard);
+
+        document.getElementById('listNameField').focus();
+    })
+    sidebar.appendChild(addListButton);
+}
+
+
+
+function displayTask(task, lst, listOfLists) {
     const taskCard = document.createElement('div');
     taskCard.setAttribute('class', 'task-card');
 
@@ -13,6 +52,21 @@ function displayTask(task) {
     checkbox.setAttribute('id', task.number);
     checkbox.setAttribute('type', 'checkbox');
     checkbox.setAttribute('class', 'css-checkbox');
+    if (task.complete) {
+        checkbox.checked = true;
+    }
+
+    checkbox.addEventListener('change', function (e) {
+        if (e.target.checked) {
+            lst.check();
+            displaySidebarLists(listOfLists);
+            task.changeComplete(true);
+        } else {
+            lst.uncheck();
+            displaySidebarLists(listOfLists);
+            task.changeComplete(false);
+        }
+    })
 
     const label = document.createElement('label');
     label.setAttribute('for', task.number);
@@ -32,22 +86,87 @@ function displayTask(task) {
     return taskCard;
 }
 
+
+
 function displayList(lst, listOfLists) {
     const listSpace = document.querySelector('#list-space');
-    const listNameDiv = document.querySelector('#list-name-div');
+    const listNameDiv = document.createElement('div');
+    listNameDiv.setAttribute('id', 'list-name-div');
+    listSpace.appendChild(listNameDiv);
 
-    const listName = document.createElement('h2');
-    listName.innerText = lst.name;
+
+    const listName = document.createElement('p');
     listName.setAttribute('class', 'list-name');
+    listName.innerText = lst.name;
+    listName.addEventListener('mouseover', function (e) {
+        const pencil = document.createElement('img');
+        pencil.setAttribute('src', '../dist/images/pencil.svg');
+        pencil.setAttribute('id', 'list-name-pencil'); // css
+        listNameDiv.appendChild(pencil);
+    })
+    listName.addEventListener('mouseout', function (e) {
+        listNameDiv.removeChild(listNameDiv.lastChild);
+    })
+    listName.addEventListener('click', function (e) {
+        const listNameFieldRight = document.createElement('input');
+        listNameFieldRight.setAttribute('id', 'listNameFieldRight'); // css
+        listNameFieldRight.setAttribute('type', 'text');
+        listNameFieldRight.value = lst.name;
+        listNameFieldRight.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                lst.updateName(e.target.value);
+                listSpace.innerHTML = '';
+                displayList(lst);
+                displaySidebarLists(listOfLists);
+            }
+        })
+        listNameDiv.innerHTML = '';
+        listNameDiv.appendChild(listNameFieldRight);
+        document.getElementById('listNameFieldRight').focus();
+    })
+    listNameDiv.appendChild(listName);
 
+
+    const listDescDiv = document.createElement('div');
+    listDescDiv.setAttribute('id', 'list-desc-div');
     const listDesc = document.createElement('p');
     listDesc.setAttribute('class', 'list-desc');
     listDesc.innerText = lst.description;
+    listDesc.addEventListener('mouseover', function (e) {
+        const pencil = document.createElement('img');
+        pencil.setAttribute('src', '../dist/images/pencil.svg');
+        pencil.setAttribute('id', 'list-desc-pencil');
+        listDescDiv.appendChild(pencil);
+    })
+    listDesc.addEventListener('mouseout', function (e) {
+        listDescDiv.removeChild(listDescDiv.lastChild);
+    })
+    listDesc.addEventListener('click', function (e) {
+        const descField = document.createElement('input');
+        descField.setAttribute('id', 'descField');
+        descField.setAttribute('type', 'text');
+        if (lst.description !== "Edit description.") {
+            // edit existing text
+            descField.value = lst.description;
+            
+        }
+        descField.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                lst.updateDesc(e.target.value);
+                listSpace.innerHTML = '';
+                displayList(lst);
+            }
+        })
+        listDescDiv.innerHTML = '';
+        listDescDiv.appendChild(descField);
+        document.getElementById('descField').focus();
+    })
+    listDescDiv.appendChild(listDesc);
 
     const list = document.createElement('div');
     list.setAttribute('class', 'list');
     lst.tasks.forEach(task => {
-        var taskCard = displayTask(task);
+        var taskCard = displayTask(task, lst, listOfLists);
         list.appendChild(taskCard);
     });
 
@@ -85,10 +204,10 @@ function displayList(lst, listOfLists) {
 
             if (e.key === 'Enter') {
                 const taskID = `${lst.tasks.length + 1}`;
-                const task = new Task(e.target.value, taskID);
-                lst.addTask(e.value);
+                const newTask = new Task(e.target.value, taskID);
+                lst.addTask(newTask); // also +1 to numImcomplete
                 list.removeChild(taskCard);
-                list.append(displayTask(task));
+                list.appendChild(displayTask(newTask, lst, listOfLists));
                 addTaskButton.hidden = false;
                 displaySidebarLists(listOfLists);
             }
@@ -133,7 +252,7 @@ function displayList(lst, listOfLists) {
     deleteListLine.appendChild(deleteListButton);
 
     listNameDiv.appendChild(listName);
-    listSpace.appendChild(listDesc);
+    listSpace.appendChild(listDescDiv);
     listSpace.appendChild(list);
     listSpace.appendChild(addTaskButton);
     listSpace.appendChild(deleteListLine);
@@ -141,23 +260,28 @@ function displayList(lst, listOfLists) {
     return list;
 }
 
+
+
 function displaySidebarLists(listOfLists) {
     const lOL = document.querySelector('#list-of-lists'); // lOL = listOfLists
-    if (listOfLists.length == 0) {
-        lOL.removeChild(lOL.lastChild);
-        lOL.style = 'height: 0';
-    }
+    lOL.innerHTML = '';
     listOfLists.forEach(list => {
-        lOL.removeChild(lOL.lastChild);
         var listCard = document.createElement('li');
         listCard.setAttribute('class', 'list-card');
         listCard.innerText = list.name;
+    
+        listCard.addEventListener('click', function (e) {
+            const listSpace = document.querySelector('#list-space');
+            listSpace.innerHTML = '';
+            displayList(list, listOfLists);
+        })
+
         var numTasks = document.createElement('p');
         numTasks.setAttribute('class', 'num-tasks');
-        numTasks.innerText = list.tasks.length;
+        numTasks.innerText = list.numIncomplete;
         listCard.appendChild(numTasks);
         lOL.appendChild(listCard);
     });
 }
 
-export {displayList, displaySidebarLists};
+export {displayList, displaySidebarLists, addList};

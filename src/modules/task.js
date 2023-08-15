@@ -5,5 +5,8 @@ class Task {
         this.number = number;
         this.complete = complete;
     }
+    changeComplete(bool) {
+        this.complete = bool;
+    }
 }
 export default Task;
