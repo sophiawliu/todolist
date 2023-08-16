@@ -1,13 +1,17 @@
 class List {
-    constructor(name, description='Edit description.', tasks=[], numIncomplete=0) {
+    constructor(name, id, description='Edit description.', tasks=[], numIncomplete=0, selected=false, numTasksAdded=0) {
         this.name = name;
         this.description = description;
         this.tasks = tasks;
         this.numIncomplete = numIncomplete;
+        this.selected = selected;
+        this.id = id;
+        this.numTasksAdded = numTasksAdded;
     }
     addTask(task) {
         this.tasks.push(task);
         this.numIncomplete += 1;
+        this.numTasksAdded += 1;
     }
     updateDesc(newDesc) {
         this.description = newDesc;

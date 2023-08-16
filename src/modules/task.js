@@ -1,8 +1,8 @@
 class Task {
-    constructor(name, number, dueDate='', complete=false) {
+    constructor(name, id, dueDate='', complete=false) {
         this.name = name;
         this.dueDate = dueDate;
-        this.number = number;
+        this.id = id;
         this.complete = complete;
     }
     changeComplete(bool) {
