@@ -130,9 +130,11 @@ ul {
 #delete-task-button {
     display: none;
     height: 2vh;
+    width: 2vh;
     margin-top: 2px;
     margin-left: 5px;
-    background-image: url('./images/xbutton.svg');
+    background-image: url('./images/xbutton.png');
+    background-size: contain;
 }
 .task-card:hover #delete-task-button {
     cursor: pointer;
@@ -260,9 +262,11 @@ label {
 #list-desc-pencil {
     display: none;
     height: 2.9vh;
+    width: 2.9vh;
     z-index: 0;
     margin-top:6px;
-    background-image: url('./images/pencil.svg');
+    background-image: url('./images/pencil.png');
+    background-size: contain;
 }
 #list-desc-pencil:hover {
     cursor: pointer;
@@ -321,9 +325,11 @@ label {
 #list-name-pencil {
     display: none;
     height: 4.5vh;
+    width: 4.5vh;
     z-index: 0;
     margin-bottom: 12px;
-    background-image: url('./images/pencil.svg');
+    background-image: url('./images/pencil.png');
+    background-size: contain;
 }
 #list-name-div:hover #list-name-pencil {
     display: inline-block;
