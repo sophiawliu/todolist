@@ -56,7 +56,6 @@ function displayTask(task, lst, listOfLists) {
     const taskCard = document.createElement('div');
     taskCard.setAttribute('class', 'task-card');
     const deleteTaskButton = document.createElement('img');
-    // deleteTaskButton.setAttribute('src', '../../images/xbutton.svg');
     deleteTaskButton.setAttribute('id', 'delete-task-button'); // css
     deleteTaskButton.addEventListener('click', function (e) {
         lst.tasks.splice(lst.tasks.indexOf(task), 1);
@@ -123,7 +122,6 @@ function displayList(lst, listOfLists) {
     listName.setAttribute('class', 'list-name');
     listName.innerText = lst.name;
     const pencil = document.createElement('img');
-    // pencil.setAttribute('src', '../../images/pencil.svg');
     pencil.setAttribute('id', 'list-name-pencil'); // css
 
     pencil.addEventListener('click', function (e) {
@@ -155,7 +153,6 @@ function displayList(lst, listOfLists) {
     listDesc.innerText = lst.description;
 
     const descPencil = document.createElement('img');
-    // descPencil.setAttribute('src', '../../images/pencil.svg');
     descPencil.setAttribute('id', 'list-desc-pencil');
     listDescDiv.appendChild(descPencil);
 
