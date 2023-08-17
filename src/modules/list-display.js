@@ -264,11 +264,15 @@ function displayList(lst, listOfLists) {
         yes.addEventListener('click', function (e) {
             listOfLists.splice(listOfLists.indexOf(lst), 1);
             listSpace.innerHTML = '';
-            displayList(listOfLists[listOfLists.length-1], listOfLists);
             // listOfLists.forEach(l => {
             //     l.selected = false;
             // });
-            selectedList = listOfLists[listOfLists.length-1];
+            if (listOfLists.length > 0) {
+                selectedList = listOfLists[listOfLists.length-1];
+                displayList(listOfLists[listOfLists.length-1], listOfLists);
+            } else {
+                selectedList = null;
+            }
             displaySidebarLists(listOfLists);
 
             Storage.deleteList(lst);
@@ -301,6 +305,9 @@ function displayList(lst, listOfLists) {
 function displaySidebarLists(listOfLists) {
     const lOL = document.querySelector('#list-of-lists'); // lOL = listOfLists
     lOL.innerHTML = '';
+    if (listOfLists.length == 0) {
+        return;
+    }
     listOfLists.forEach(list => {
         // console.log(list.id, list.selected)
         var listCard = document.createElement('div');
