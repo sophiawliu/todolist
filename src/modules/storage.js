@@ -59,7 +59,7 @@ export default class Storage {
         })
         lst.tasks.splice(lst.tasks.indexOf(tsk), 1);
         if (!task.complete) {
-            lst.numIncomplete +=1; // +1 from numTasks in sidebar
+            lst.numIncomplete -=1; // +1 from numTasks in sidebar
         }
         localStorage.setItem('myLists', JSON.stringify(lOL));
     }
